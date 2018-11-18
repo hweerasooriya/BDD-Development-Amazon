@@ -1,5 +1,6 @@
 package stepDef;
 
+import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -11,7 +12,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import pages.*;
+
 import java.util.List;
+import java.util.Map;
 
 public class AmazonStepDef {
 
@@ -45,39 +48,39 @@ public class AmazonStepDef {
 
         @When("^user clicks on sign in link$")
         public void user_clicks_on_sign_in_link() {
+
             driver.findElement(AmazonLandingPage.signInLink).click();
         }
 
-        @When("^user enter \"([^\"]*)\" for username$")
-        public void user_enter_the_username(String username) {
-            driver.findElement(AmazonLoginPage.usernameTextBox).sendKeys(username);
+        @When("^user enters invalid sign in details$")
+         public void user_enters_invalid_sign_in_details(DataTable invalidcrentials) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        // For automatic transformation, change DataTable to one of
+        // List<YourType>, List<List<E>>, List<Map<K,V>> or Map<K,V>.
+        // E,K,V must be a scalar (String, Integer, Date, enum etc)
+            List<Map<String, String>> signin = invalidcrentials.asMaps(String.class, String.class);
+            driver.findElement(AmazonLoginPage.usernameTextBox).sendKeys(signin.get(0).get("email-address"));
+            driver.findElement(AmazonLoginPage.passwordTextBox).sendKeys(signin.get(0).get("password"));
         }
 
-        @When("^user clicks on continue button in login page$")
-        public void user_clicks_on_continue_button_in_login_page() {
+        @When("^user clicks on \"([^\"]*)\" button in login page$")
+         public void user_clicks_on_button_in_login_page(String signInBtn) throws Throwable {
             driver.findElement(AmazonLoginPage.continueButton).click();
-        }
+         }
 
-        @Then("^user should be able to see the incorrect email error message$")
-        public void user_should_be_able_to_see_the_incorrect_email_error_message() {
+        @Then("^user should be able to see the incorrect validation error message$")
+        public void user_should_be_able_to_see_the_incorrect_validation_error_message() throws Throwable {
             Assert.assertTrue("Error message for incorrect email was not be displayed",
                     driver.findElement(AmazonLoginPage.usernameErrorMessage).isDisplayed());
         }
+        @When("^user enters \"([^\"]*)\" for username$")
+        public void user_enters_for_username(String username) throws Throwable {
+            driver.findElement(AmazonLoginPage.usernameTextBox).sendKeys(username);
+        }
 
-        @When("^user enter \"([^\"]*)\" for password$")
-        public void user_enter_the_password(String password) {
+        @When("^user enters \"([^\"]*)\" for password$")
+        public void user_enters_for_password(String password) throws Throwable {
             driver.findElement(AmazonLoginPage.passwordTextBox).sendKeys(password);
-        }
-
-        @Then("^user should be able to see the incorrect password error message$")
-        public void user_should_be_able_to_see_the_incorrect_password_error_message() {
-            Assert.assertTrue("Error message for incorrect password was not be displayed",
-                    driver.findElement(AmazonLoginPage.passwordErrorMessage).isDisplayed());
-        }
-
-        @When("^user clicks on sign in button in login page$")
-        public void user_clicks_on_sign_in_button_in_login_page() {
-            driver.findElement(AmazonLoginPage.signInButton).click();
         }
 
         @Then("^user should be able to see username \"([^\"]*)\" in home page header$")
@@ -95,8 +98,9 @@ public class AmazonStepDef {
 
         @Then("^user should be able to see most relevant results of \"([^\"]*)\"$")
         public void user_should_be_able_to_see_and_related_products(String product) {
-            Assert.assertTrue("Search results of " + product + " not be displayed",
-                    driver.findElement(AmazonSearchResultsPage.searchResultsSummary).isDisplayed());
+            Assert.assertEquals("Search results of " + product + " not be displayed",
+                    "Showing selected results. See all results for "+product+".",
+                     driver.findElement(AmazonSearchResultsPage.searchResultsSummary).getText());
         }
 
         @When("^user clicks on first product$")
@@ -111,6 +115,7 @@ public class AmazonStepDef {
                     driver.findElement(AmazonProductPage.addToCartButton).isDisplayed());
             Assert.assertEquals("Invalid product page", firstProductTitleInSearchResultsPage,
                     driver.findElement(AmazonProductPage.productTitleInProductPage).getText());
+                    //driver.findElement(AmazonProductPage.productTitleInProductPage).getText());
         }
 
         @Then("^user should be able to see added to cart message$")
@@ -159,8 +164,9 @@ public class AmazonStepDef {
         }
 
         private void captureProductDetails() {
-            productName = driver.findElement(AmazonProductPage.productTitleInProductPage).getText();
-            productPrice = driver.findElement(AmazonProductPage.productPriceInProductPage).getText();
+             productName = driver.findElement(AmazonProductPage.productTitleInProductPage).getText();
+             productPrice = driver.findElement(AmazonProductPage.productPriceInProductPage).getText();
+
         }
 
         private List<WebElement> getQuantities() {

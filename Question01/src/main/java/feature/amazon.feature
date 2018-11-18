@@ -10,54 +10,36 @@ Feature: Adding products to basket in amazon
     Then user should be able to see a search box in page header
     And user close the browser
 
-
-  Scenario Outline: verify the error message for incorrect username
+  Scenario: verify the error message for incorrect email and password
     Given user launch the chrome browser
     When user load amazon
     When user clicks on sign in link
-    When user enter "<username>" for username
-    When user clicks on continue button in login page
-    Then user should be able to see the incorrect email error message
+    When user enters invalid sign in details
+        |email-address                     |password|
+        |invalidtestautomationuser1@yomai |password|
+    When user clicks on "Sign In" button in login page
+    Then user should be able to see the incorrect validation error message
     And user close the browser
 
-    Examples:
-      | username       |
-      | testautomationuser1@yopmail.co |
-      | testautomationuser1@yopmail.co |
-      | testautomationuser1@yopmail.co |
-      | testautomationuser1@yopmail.co |
 
-  Scenario: verify the error message for incorrect password
+    Scenario: verify successful login and the header of home page
     Given user launch the chrome browser
     When user load amazon
     When user clicks on sign in link
-    When user enter "testautomationuser1@yopmail.com" for username
-    When user clicks on continue button in login page
-    When user enter "password" for password
-    When user clicks on sign in button in login page
-    Then user should be able to see the incorrect password error message
-    And user close the browser
-
-  Scenario: verify successful login and the header of home page
-    Given user launch the chrome browser
-    When user load amazon
-    When user clicks on sign in link
-    When user enter "testautomationuser1@yopmail.com" for username
-    When user clicks on continue button in login page
-    When user enter "qwEr@1234" for password
-    When user clicks on sign in button in login page
-    Then user should be able to see username "Test" in home page header
+    When user enters "qa.testharshani@gmail.com" for username
+    When user enters "qwEr@1234" for password
+    When user clicks on "SignIn" button in login page
+    Then user should be able to see username "Harshani" in home page header
     And user close the browser
 
   Scenario: verify product page navigation of iPhone X 64GB product
     Given user launch the chrome browser
     When user load amazon
     When user clicks on sign in link
-    When user enter "testautomationuser1@yopmail.com" for username
-    When user clicks on continue button in login page
-    When user enter "qwEr@1234" for password
-    When user clicks on sign in button in login page
-    Then user should be able to see username "Test" in home page header
+    When user enters "qa.testharshani@gmail.com" for username
+    When user enters "qwEr@1234" for password
+    When user clicks on "SignIn" button in login page
+    Then user should be able to see username "Harshani" in home page header
     When user search "iPhone X 64gb" product
     Then user should be able to see most relevant results of "iPhone X 64gb"
     When user clicks on first product
@@ -68,11 +50,10 @@ Feature: Adding products to basket in amazon
     Given user launch the chrome browser
     When user load amazon
     When user clicks on sign in link
-    When user enter "testautomationuser1@yopmail.com" for username
-    When user clicks on continue button in login page
-    When user enter "qwEr@1234" for password
-    When user clicks on sign in button in login page
-    Then user should be able to see username "Husny" in home page header
+    When user enters "qa.testharshani@gmail.com" for username
+    When user enters "qwEr@1234" for password
+    When user clicks on "SignIn" button in login page
+    Then user should be able to see username "Harshani" in home page header
     When user search "iPhone X 64gb" product
     When user clicks on first product
     When user select quantity as "1" and add to cart
@@ -84,11 +65,10 @@ Feature: Adding products to basket in amazon
     Given user launch the chrome browser
     When user load amazon
     When user clicks on sign in link
-    When user enter "testautomationuser1@yopmail.com" for username
-    When user clicks on continue button in login page
-    When user enter "qwEr@1234" for password
-    When user clicks on sign in button in login page
-    Then user should be able to see username "Test" in home page header
+    When user enters "qa.testharshani@gmail.com" for username
+    When user enters "qwEr@1234" for password            
+    When user clicks on "SignIn" button in login page    
+    Then user should be able to see username "Harshani" in home page header
     When user clicks on basket
     Then user should be able to see the exact product name and exact price in basket
     And user close the browser
